@@ -39,7 +39,7 @@ To set up ANX.ai locally, follow these steps:
 To set up ANX.ai locally, follow these steps:
 
 1. Clone the repository:
-git clone https://github.com/yourusername/ANX.ai.git
+git clone https://github.com/Abhishek-MSBI/ANX.io.git
 
 text
 2. Navigate to the project directory:
