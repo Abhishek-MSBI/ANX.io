@@ -131,7 +131,7 @@
 
     <!-- Modified Script -->
     <script>
-        function searchFastAPI() {
+        async function searchFastAPI() {
             const query = document.getElementById('searchInput').value.trim();
             const fileInput = document.getElementById('fileInput');
             const formData = new FormData();
@@ -142,18 +142,20 @@
             }
 
             if (query || fileInput.files.length > 0) {
-                fetch('http://your-fastapi-endpoint/search', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
+                try {
+                    const response = await fetch('http://localhost:8000/chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ message: query })
+                    });
+                    const data = await response.json();
                     document.getElementById('response-container').innerHTML = `<p class="text-gray-800">${data.response}</p>`;
-                })
-                .catch(error => {
+                } catch (error) {
                     console.error('Error:', error);
                     document.getElementById('response-container').innerHTML = '<p class="text-red-500">Error connecting to the server</p>';
-                });
+                }
             }
         }
 
