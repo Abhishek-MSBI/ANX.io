@@ -21,6 +21,9 @@
             50% { transform: translateY(-20px); }
             100% { transform: translateY(0px); }
         }
+        html {
+            scroll-behavior: smooth;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -61,6 +64,18 @@
                     <img src="/api/placeholder/600/400" alt="DNA Analysis Visualization" class="dna-animation rounded-lg shadow-2xl">
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Search Bar and Response Area -->
+    <section id="search" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">DeepSeek AI - ChatGPT Clone</h2>
+            <div id="search-container" class="mb-8">
+                <input type="text" id="searchInput" placeholder="Type your question..." 
+                       onkeyup="sendMessage(this)" class="w-full px-4 py-2 rounded-lg border focus:outline-none focus:border-teal-500">
+            </div>
+            <div id="response-container" class="bg-gray-50 p-8 rounded-lg shadow-lg"></div>
         </div>
     </section>
 
@@ -182,5 +197,24 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        function sendMessage(input) {
+            const query = input.value.trim();
+            
+            if (query) {
+                fetch(`https://msbi155.app.n8n.cloud/webhook-test/62894eab-bd66-4dae-992b-e3b02fa90a3f?query=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message) {
+                            document.getElementById('response-container').innerHTML += `<p>${data.message}</p>`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        }
+    </script>
 </body>
 </html>
