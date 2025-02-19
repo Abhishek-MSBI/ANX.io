@@ -155,5 +155,26 @@
             window.URL.revokeObjectURL(url);
         }
     </script>
+    <script>
+        document.getElementById('chat-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const message = document.getElementById('message').value;
+            const responseDiv = document.getElementById('response');
+
+            try {
+                const response = await fetch('http://localhost:8000/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+                const data = await response.json();
+                responseDiv.innerHTML = `<p>${data.response}</p>`; // Adjust this based on your API response structure
+            } catch (error) {
+                responseDiv.innerHTML = `<p>Error: ${error.message}</p>`;
+            }
+        });
+    </script>
 </body>
 </html>
