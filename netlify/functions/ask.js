@@ -1,4 +1,3 @@
-// netlify/functions/ask.js
 const axios = require('axios');
 
 exports.handler = async function(event, context) {
@@ -16,7 +15,7 @@ exports.handler = async function(event, context) {
     const response = await axios.post(
       deepSeekEndpoint,
       {
-        model: "deepseek/deepseek-chat:free", // Updated model name
+        model: "deepseek/deepseek-r1-distill-llama-70b:free", // Updated model name
         messages: [
           { role: "system", content: "You are MSBI.AI, an advanced AI assistant specifically trained for biological research and analysis. Provide detailed, accurate responses with scientific citations when available." },
           { role: "user", content: query }
@@ -25,6 +24,8 @@ exports.handler = async function(event, context) {
       {
         headers: {
           'Authorization': `Bearer ${apiKey}`,
+          'HTTP-Referer': '<YOUR_SITE_URL>', // Optional. Replace with your site URL.
+          'X-Title': '<YOUR_SITE_NAME>', // Optional. Replace with your site name.
           'Content-Type': 'application/json'
         }
       }
