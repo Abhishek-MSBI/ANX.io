@@ -18,7 +18,7 @@
 
 MSBI.AI is hosted online and is available 24/7. To access the website:
 1. Open your preferred web browser.
-2. Navigate to the following URL: [[https://msbi.ai](https://msbi.ai](https://abhishek-msbi.github.io/ANX.io/))
+2. Navigate to the following URL: [https://abhishek-msbi.github.io/ANX.io/]
 3. Use the search bar on the homepage to enter your bioscience-related queries.
 4. View the AI-generated insights directly on the page and, if desired, download the results as a PDF report.
 
