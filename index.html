@@ -140,4 +140,122 @@
 
     <!-- Contact Section -->
     <section id="contact" class="section py-20 bg-gray-900 min-h-screen">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center mb-12 gradient-text">Contact Us</h2>
+            <div class="bg-gray-800 rounded-lg p-8">
+                <div class="mb-6">
+                    <h3 class="text-2xl font-semibold mb-4 text-teal-400">Project Lead</h3>
+                    <p class="text-gray-300">Name: ABHISHEK S R</p>
+                    <p class="text-gray-300">Email: abhirathod2512@gmail.com</p>
+                </div>
+                <div class="mt-8">
+                    <h3 class="text-2xl font-semibold mb-4 text-teal-400">Get in Touch</h3>
+                    <p class="text-gray-300">
+                        We welcome your feedback, questions, and suggestions about MSBI.AI. Feel free to reach out to us using the contact information above.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        // Navigation Functions
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // DNA Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const rungs = document.getElementById('rungs');
+            for (let i = 0; i < 20; i++) {
+                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute("x1", "75");
+                line.setAttribute("y1", i * 20);
+                line.setAttribute("x2", "125");
+                line.setAttribute("y2", i * 20);
+                line.setAttribute("stroke", "rgba(255,255,255,0.2)");
+                rungs.appendChild(line);
+            }
+        });
+
+        // API Integration
+        async function generateResponse() {
+            const query = document.getElementById('searchInput').value.trim();
+            const responseContainer = document.getElementById('response-container');
+            const responseContent = document.getElementById('response-content');
+
+            if (!query) {
+                alert('Please enter a research question or topic.');
+                return;
+            }
+
+            responseContainer.classList.remove('hidden');
+            responseContent.innerHTML = '<div class="animate-pulse">Generating response...</div>';
+
+            try {
+                const response = await fetch('https://openrouter.ai/deepseek/deepseek-r1:free', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: "deepseek-chat",
+                        messages: [
+                            {
+                                role: "system",
+                                content: "You are MSBI.AI, an advanced AI assistant specifically trained for biological research and analysis. Provide detailed, accurate responses with scientific citations when available."
+                            },
+                            {
+                                role: "user",
+                                content: query
+                            }
+                        ]
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('API response was not ok');
+                }
+
+                const data = await response.json();
+                responseContent.innerHTML = data.choices[0].message.content.replace(/\n/g, '<br>');
+            } catch (error) {
+                responseContent.innerHTML = `
+                    <div class="text-red-600">
+                        I apologize, but I'm currently experiencing technical difficulties. As an alternative, you can:
+                        <ul class="list-disc ml-6 mt-2">
+                            <li>Try refreshing the page</li>
+                            <li>Use a different research question</li>
+                            <li>Contact support at abhirathod2512@gmail.com</li>
+                        </ul>
+                    </div>`;
+            }
+        }
+
+        function downloadPDF() {
+            const content = document.getElementById('response-content');
+            const opt = {
+                margin: 1,
+                filename: 'MSBI_AI_Response.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(content).save();
+        }
+
+        function copyToClipboard() {
+            const content = document.getElementById('response-content').innerText;
+            navigator.clipboard.writeText(content)
+                .then(() => alert('Content copied to clipboard!'))
+                .catch(() => alert('Failed to copy content. Please try again.'));
+        }
+    </script>
+</body>
+</html>
